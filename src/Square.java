@@ -11,6 +11,14 @@ public class Square {
         this.color = color;
     }
 
+    Piece getPiece() {
+        return piece;
+    }
+
+    Boolean getColor() {
+        return color;
+    }
+
     public char printValue() {
         if (piece == null) return '.';
         final char letter;
