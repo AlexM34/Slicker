@@ -21,16 +21,7 @@ public class Square {
 
     public char printValue() {
         if (piece == null) return '.';
-        final char letter;
-        switch (piece) {
-            case PAWN: letter = 'p'; break;
-            case KNIGHT: letter = 'n'; break;
-            case BISHOP: letter = 'b'; break;
-            case ROOK: letter = 'r'; break;
-            case QUEEN: letter = 'q'; break;
-            default: letter = 'k'; break;
-        }
-
+        final char letter = piece.getLetter();
         return color ? (char) (letter - 'a' + 'A') : letter;
     }
 }

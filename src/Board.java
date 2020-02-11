@@ -24,12 +24,12 @@ public class Board {
 
     private Piece findPiece(final int x, final int y) {
         if (1 < y && y < 6) return null;
-        else if (y == 1 || y == 6) return Piece.PAWN;
-        else if (x == 1 || x == 6) return Piece.KNIGHT;
-        else if (x == 2 || x == 5) return Piece.BISHOP;
-        else if (x == 0 || x == 7) return Piece.ROOK;
-        else if (x == 3) return Piece.QUEEN;
-        else if (x == 4) return Piece.KING;
+        else if (y == 1 || y == 6) return new Pawn();
+        else if (x == 1 || x == 6) return new Knight();
+        else if (x == 2 || x == 5) return new Bishop();
+        else if (x == 0 || x == 7) return new Rook();
+        else if (x == 3) return new Queen();
+        else if (x == 4) return new King();
         throw new IllegalArgumentException(String.format("Coordinates (%d, %d) do not exist on the board", x, y));
     }
 }
