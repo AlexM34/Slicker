@@ -1,14 +1,16 @@
 public class Square {
-    private final int x;
-    private final int y;
+    private final Coordinates coordinates;
     private Piece piece;
     private Boolean color;
 
-    public Square(final int x, final int y, final Piece piece, final Boolean color) {
-        this.x = x;
-        this.y = y;
+    public Square(final Coordinates coordinates, final Piece piece, final Boolean color) {
+        this.coordinates = coordinates;
         this.piece = piece;
         this.color = color;
+    }
+
+    Coordinates getCoordinates() {
+        return coordinates;
     }
 
     Piece getPiece() {

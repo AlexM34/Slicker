@@ -17,16 +17,16 @@ public class Slicker {
         while(!c.equals("w") && !c.equals("b")) c = scanner.nextLine();
         USER = c.equals("w") ? 0 : 1;
         System.out.println(USER);
-        validMoves(true);
+        getValidMoves(true);
     }
 
-    private static Map<int[], List<int[]>> validMoves(final boolean isWhite) {
-        final Map<int[], List<int[]>> moves = new HashMap<>();
+    private static Map<Coordinates, List<Coordinates>> getValidMoves(final boolean isWhite) {
+        final Map<Coordinates, List<Coordinates>> moves = new HashMap<>();
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                final int[] source = new int[]{x, y};
+                final Coordinates source = new Coordinates(x, y);
                 if (board.getBoard()[x][y].getColor() == Boolean.valueOf(isWhite)) {
-                    for (final int[] destination : validPieceMoves(x, y)) {
+                    for (final Coordinates destination : validPieceMoves(source)) {
                         if (moves.containsKey(source)) moves.get(source).add(destination);
                         else moves.put(source, new ArrayList<>(Collections.singletonList(destination)));
                     }
@@ -34,7 +34,7 @@ public class Slicker {
 
                 if (moves.containsKey(source)) {
                     System.out.print(notation(source) + " -> ");
-                    for (final int[] destination : moves.get(source)) {
+                    for (final Coordinates destination : moves.get(source)) {
                         System.out.print(notation(destination) + " ");
                     }
 
@@ -46,14 +46,14 @@ public class Slicker {
         return moves;
     }
 
-    private static List<int[]> validPieceMoves(final int x, final int y) {
-        final boolean isWhite = board.getBoard()[x][y].getColor();
-        return board.getBoard()[x][y].getPiece().getValidSquares(board.getBoard(), x, y, isWhite);
+    private static List<Coordinates> validPieceMoves(final Coordinates source) {
+        final Square square = board.getShiftedSquare(source);
+        return square.getPiece().getValidSquares(board, source, square.getColor());
     }
 
-    private static String notation(final int[] square) {
-        String notation = String.valueOf((char) (square[0] + 'a'));
-        notation += (char) (square[1] + '1');
+    private static String notation(final Coordinates coordinates) {
+        String notation = String.valueOf((char) (coordinates.getX() + 'a'));
+        notation += (char) (coordinates.getY() + '1');
         return notation;
     }
 

@@ -9,12 +9,21 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<int[]> getValidSquares(final Square[][] board, final int x, final int y, final boolean isWhite) {
-        final List<int[]> moves = new ArrayList<>();
+    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates, final boolean isWhite) {
+        final List<Coordinates> moves = new ArrayList<>();
         final int direction = isWhite ? 1 : -1;
 
-        if (isValidSquare(board, x, y + direction, isWhite)) moves.add(new int[]{x, y + direction});
-        if (isValidSquare(board, x, y + 2 * direction, isWhite)) moves.add(new int[]{x, y + 2 * direction});
+        final Square singleMove = board.getShiftedSquare(coordinates, 0, direction);
+        if (isValidDestination(singleMove, isWhite)) moves.add(singleMove.getCoordinates());
+
+        final Square doubleMove = board.getShiftedSquare(coordinates, 0, 2 * direction);
+        if (canDouble(coordinates, isWhite) &&
+                isValidDestination(doubleMove, isWhite)) moves.add(doubleMove.getCoordinates());
+
         return moves;
+    }
+
+    private boolean canDouble(final Coordinates coordinates, final boolean isWhite) {
+        return isWhite ? coordinates.getY() == 1 : coordinates.getY() == 6;
     }
 }

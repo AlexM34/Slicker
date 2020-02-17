@@ -1,13 +1,22 @@
 public class Board {
     private final Square[][] board;
 
-    public Board() {
+    Board() {
         this.board = new Square[8][8];
         setup();
     }
 
-    public Square[][] getBoard() {
+    Square[][] getBoard() {
         return board;
+    }
+
+    Square getShiftedSquare(final Coordinates coordinates) {
+        return board[coordinates.getX()][coordinates.getY()];
+    }
+
+    Square getShiftedSquare(final Coordinates coordinates, final int xShift, final int yShift) {
+        if (!coordinates.canShift(xShift, yShift)) return null;
+        return board[coordinates.getX() + xShift][coordinates.getY() + yShift];
     }
 
     private void setup() {
@@ -17,7 +26,7 @@ public class Board {
                 Boolean color = null;
                 if (y < 2) color = true;
                 else if (y > 5) color = false;
-                this.board[x][y] = new Square(x, y, piece, color);
+                this.board[x][y] = new Square(new Coordinates(x, y), piece, color);
             }
         }
     }
