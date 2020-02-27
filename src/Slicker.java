@@ -47,7 +47,7 @@ public class Slicker {
     }
 
     private static List<Coordinates> validPieceMoves(final Coordinates source) {
-        final Square square = board.getShiftedSquare(source);
+        final Square square = board.getSquare(source);
         return square.getPiece().getValidSquares(board, source, square.getColor());
     }
 
