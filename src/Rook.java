@@ -15,24 +15,32 @@ public class Rook extends Piece {
             final Square destination = board.getShiftedSquare(coordinates, i, 0);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         for (int i = -1; i >= -7; i--) {
             final Square destination = board.getShiftedSquare(coordinates, 0, i);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         for (int i = 1; i <= 7; i++) {
             final Square destination = board.getShiftedSquare(coordinates, i, 0);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         for (int i = 1; i <= 7; i++) {
             final Square destination = board.getShiftedSquare(coordinates, 0, i);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         return moves;

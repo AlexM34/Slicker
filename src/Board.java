@@ -1,11 +1,16 @@
 import java.util.List;
 
 public class Board {
-    private final Square[][] board;
+    private static Square[][] board = new Square[8][8];
 
     Board() {
-        this.board = new Square[8][8];
+        board = new Square[8][8];
         setup();
+    }
+
+    static void play(final List<Coordinates> move) {
+        board[move.get(1).getX()][move.get(1).getY()].movePiece(board[move.get(0).getX()][move.get(0).getY()]);
+        board[move.get(0).getX()][move.get(0).getY()].makeEmpty();
     }
 
     Square[][] getBoard() {
@@ -36,7 +41,7 @@ public class Board {
                 Boolean color = null;
                 if (y < 2) color = true;
                 else if (y > 5) color = false;
-                this.board[x][y] = new Square(new Coordinates(x, y), piece, color);
+                board[x][y] = new Square(new Coordinates(x, y), piece, color);
             }
         }
     }

@@ -21,6 +21,16 @@ public class Square {
         return color;
     }
 
+    void makeEmpty() {
+        piece = null;
+        color = null;
+    }
+
+    void movePiece(final Square square) {
+        this.piece = square.getPiece();
+        this.color = square.getColor();
+    }
+
     public char printValue() {
         if (piece == null) return '.';
         final char letter = piece.getLetter();

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ public class Slicker {
     private static Scanner scanner = new Scanner(System.in);
     private static int USER;
     private static Board board;
+    private static boolean isWhite;
 
     public static void main(final String[] args) {
         initialise();
@@ -18,6 +20,50 @@ public class Slicker {
         USER = c.equals("w") ? 0 : 1;
         System.out.println(USER);
         getValidMoves(true);
+
+        startGame();
+    }
+
+    private static void startGame() {
+        isWhite = true;
+        while(true) userMove();
+    }
+
+    private static void userMove() {
+        final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(isWhite);
+        while(true) {
+            final String input = scanner.nextLine();
+            final List<Coordinates> move = parseMove(input);
+
+            if (isAllowed(move, validMoves)) {
+                play(move);
+                break;
+            }
+        }
+    }
+
+    private static boolean isAllowed(final List<Coordinates> move,
+                                     final Map<Coordinates, List<Coordinates>> validMoves) {
+
+        final List<Coordinates> validDestinations = validMoves.get(move.get(0));
+
+        return validDestinations != null && validDestinations.contains(move.get(1));
+    }
+
+    private static void play(final List<Coordinates> move) {
+        Board.play(move);
+        isWhite = !isWhite;
+        printBoard();
+    }
+
+    private static List<Coordinates> parseMove(final String move) {
+        final Coordinates source = transformCoordinates(move.substring(0, 2));
+        final Coordinates destination = transformCoordinates(move.substring(2, 4));
+        return Arrays.asList(source, destination);
+    }
+
+    private static Coordinates transformCoordinates(final String s) {
+        return new Coordinates(s.charAt(0) - 'a', s.charAt(1) - '1');
     }
 
     private static Map<Coordinates, List<Coordinates>> getValidMoves(final boolean isWhite) {
@@ -59,7 +105,11 @@ public class Slicker {
 
     private static void initialise() {
         board = new Board();
-        for (int y = 0; y < 8; y++) {
+        printBoard();
+    }
+
+    private static void printBoard() {
+        for (int y = 7; y >= 0; y--) {
             for (int x = 0; x < 8; x++) {
                 System.out.print(board.getBoard()[x][y].printValue());
             }

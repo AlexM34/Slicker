@@ -15,24 +15,32 @@ public class Bishop extends Piece {
             final Square destination = board.getShiftedSquare(coordinates, i, i);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         for (int i = -1; i >= -7; i--) {
             final Square destination = board.getShiftedSquare(coordinates, i, -i);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         for (int i = 1; i <= 7; i++) {
             final Square destination = board.getShiftedSquare(coordinates, i, i);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         for (int i = 1; i <= 7; i++) {
             final Square destination = board.getShiftedSquare(coordinates, i, -i);
             if (!isValidDestination(destination, isWhite)) break;
             moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, !isWhite)) break;
         }
 
         return moves;
