@@ -21,6 +21,10 @@ public class Square {
         return color;
     }
 
+    boolean isEmpty() {
+        return color == null;
+    }
+
     void makeEmpty() {
         piece = null;
         color = null;

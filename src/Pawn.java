@@ -14,11 +14,19 @@ public class Pawn extends Piece {
         final int direction = isWhite ? 1 : -1;
 
         final Square singleMove = board.getShiftedSquare(coordinates, 0, direction);
-        if (isValidDestination(singleMove, isWhite)) moves.add(singleMove.getCoordinates());
+        if (isValidDestination(singleMove, isWhite) && singleMove.isEmpty()) {
+            moves.add(singleMove.getCoordinates());
 
-        final Square doubleMove = board.getShiftedSquare(coordinates, 0, 2 * direction);
-        if (canDouble(coordinates, isWhite) &&
-                isValidDestination(doubleMove, isWhite)) moves.add(doubleMove.getCoordinates());
+            final Square doubleMove = board.getShiftedSquare(coordinates, 0, 2 * direction);
+            if (canDouble(coordinates, isWhite) && isValidDestination(doubleMove, isWhite) &&
+                    doubleMove.isEmpty()) moves.add(doubleMove.getCoordinates());
+        }
+
+        final Square takeLeft = board.getShiftedSquare(coordinates, -1, direction);
+        if (isValidDestination(takeLeft, isWhite) && !takeLeft.isEmpty()) moves.add(takeLeft.getCoordinates());
+
+        final Square takeRight = board.getShiftedSquare(coordinates, 1, direction);
+        if (isValidDestination(takeRight, isWhite) && !takeRight.isEmpty()) moves.add(takeRight.getCoordinates());
 
         return moves;
     }

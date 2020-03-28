@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Slicker {
@@ -26,7 +27,14 @@ public class Slicker {
 
     private static void startGame() {
         isWhite = true;
-        while(true) userMove();
+        while(true) {
+            if (isUserMove()) userMove();
+            else computerMove();
+        }
+    }
+
+    private static boolean isUserMove() {
+        return (USER == 0) == isWhite;
     }
 
     private static void userMove() {
@@ -40,6 +48,16 @@ public class Slicker {
                 break;
             }
         }
+    }
+
+    private static void computerMove() {
+        final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(isWhite);
+        final Coordinates[] sources = validMoves.keySet().toArray(Coordinates[]::new);
+        final Coordinates source = sources[new Random().nextInt(sources.length)];
+        final Coordinates[] destinations = validMoves.get(source).toArray(Coordinates[]::new);
+        final Coordinates destination = destinations[new Random().nextInt(destinations.length)];
+
+        play(Arrays.asList(source, destination));
     }
 
     private static boolean isAllowed(final List<Coordinates> move,
