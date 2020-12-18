@@ -1,6 +1,11 @@
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 public class Board {
+
+    private static final PrintStream STREAM = new PrintStream(new FileOutputStream(FileDescriptor.out));
     private static Square[][] board = new Square[8][8];
 
     Board() {
@@ -11,6 +16,18 @@ public class Board {
     static void play(final List<Coordinates> move) {
         board[move.get(1).getX()][move.get(1).getY()].movePiece(board[move.get(0).getX()][move.get(0).getY()]);
         board[move.get(0).getX()][move.get(0).getY()].makeEmpty();
+    }
+
+    static void undo(final List<Coordinates> move, final Piece piece) {
+        board[move.get(0).getX()][move.get(0).getY()].movePiece(board[move.get(1).getX()][move.get(1).getY()]);
+
+        if (piece != null) {
+            final Boolean color = !board[move.get(1).getX()][move.get(1).getY()].getColor();
+            board[move.get(1).getX()][move.get(1).getY()].movePiece(new Square(new Coordinates(0, 0), piece, color));
+
+        } else {
+            board[move.get(1).getX()][move.get(1).getY()].makeEmpty();
+        }
     }
 
     Square[][] getBoard() {
@@ -57,11 +74,11 @@ public class Board {
         throw new IllegalArgumentException(String.format("Coordinates (%d, %d) do not exist on the board", x, y));
     }
 
-    private boolean isInCheck(final boolean isWhite) {
+    public boolean isInCheck(final boolean isWhite) {
         final Coordinates king = findKing(isWhite);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (board[x][y].getColor() == !isWhite && isValid(new Coordinates(x, y), king)) return true;
+                if (board[x][y].getColor() == Boolean.valueOf(!isWhite) && isValid(new Coordinates(x, y), king)) return true;
             }
         }
 
@@ -69,13 +86,14 @@ public class Board {
     }
 
     private boolean isValid(final Coordinates source, final Coordinates destination) {
-        return getPiece(source).getValidSquares(this, destination, getColor(source)).contains(destination);
+        return getPiece(source).getValidSquares(this, source, getColor(source)).contains(destination);
     }
 
     private Coordinates findKing(final boolean isWhite) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (board[x][y].getPiece().getLetter() == 'k' && board[x][y].getColor() == isWhite) {
+                if (board[x][y].getPiece() != null && board[x][y].getPiece().getLetter() == 'k'
+                        && board[x][y].getColor() == Boolean.valueOf(isWhite)) {
                     return new Coordinates(x, y);
                 }
             }
@@ -84,4 +102,5 @@ public class Board {
         throw new IllegalStateException(String.format("The %s king is not present on the board!",
                 (isWhite ? "white" : "black")));
     }
+
 }

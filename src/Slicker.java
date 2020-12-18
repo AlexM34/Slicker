@@ -1,3 +1,6 @@
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,18 +11,22 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Slicker {
-    private static Scanner scanner = new Scanner(System.in);
+
+    private static final PrintStream STREAM = new PrintStream(new FileOutputStream(FileDescriptor.out));
+    private static final Scanner SCANNER = new Scanner(System.in);
+
     private static int USER;
     private static Board board;
     private static boolean isWhite;
+    private static boolean inProgress;
 
     public static void main(final String[] args) {
         initialise();
-        System.out.println("Choose White(w) or Black(b)");
-        String c = scanner.nextLine();
-        while(!c.equals("w") && !c.equals("b")) c = scanner.nextLine();
+        STREAM.println("Choose White(w) or Black(b)");
+        String c = SCANNER.nextLine();
+        while(!c.equals("w") && !c.equals("b")) c = SCANNER.nextLine();
         USER = c.equals("w") ? 0 : 1;
-        System.out.println(USER);
+        STREAM.println(USER);
         getValidMoves(true);
 
         startGame();
@@ -27,7 +34,7 @@ public class Slicker {
 
     private static void startGame() {
         isWhite = true;
-        while(true) {
+        while (inProgress) {
             if (isUserMove()) userMove();
             else computerMove();
         }
@@ -39,8 +46,13 @@ public class Slicker {
 
     private static void userMove() {
         final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(isWhite);
+        if (validMoves.isEmpty()) {
+            gameOver();
+            return;
+        }
+
         while(true) {
-            final String input = scanner.nextLine();
+            final String input = SCANNER.nextLine();
             final List<Coordinates> move = parseMove(input);
 
             if (isAllowed(move, validMoves)) {
@@ -52,12 +64,24 @@ public class Slicker {
 
     private static void computerMove() {
         final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(isWhite);
+        if (validMoves.isEmpty()) {
+            gameOver();
+            return;
+        }
+
         final Coordinates[] sources = validMoves.keySet().toArray(Coordinates[]::new);
         final Coordinates source = sources[new Random().nextInt(sources.length)];
         final Coordinates[] destinations = validMoves.get(source).toArray(Coordinates[]::new);
         final Coordinates destination = destinations[new Random().nextInt(destinations.length)];
 
         play(Arrays.asList(source, destination));
+    }
+
+    private static void gameOver() {
+        inProgress = false;
+
+        if ((USER == 0 && !isWhite) || (USER == 1 && isWhite)) STREAM.println("YOU WIN!");
+        else STREAM.println("YOU LOSE!");
     }
 
     private static boolean isAllowed(final List<Coordinates> move,
@@ -88,26 +112,46 @@ public class Slicker {
         final Map<Coordinates, List<Coordinates>> moves = new HashMap<>();
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                final Coordinates source = new Coordinates(x, y);
-                if (board.getBoard()[x][y].getColor() == Boolean.valueOf(isWhite)) {
-                    for (final Coordinates destination : validPieceMoves(source)) {
-                        if (moves.containsKey(source)) moves.get(source).add(destination);
-                        else moves.put(source, new ArrayList<>(Collections.singletonList(destination)));
-                    }
-                }
-
-                if (moves.containsKey(source)) {
-                    System.out.print(notation(source) + " -> ");
-                    for (final Coordinates destination : moves.get(source)) {
-                        System.out.print(notation(destination) + " ");
-                    }
-
-                    System.out.println();
-                }
+                checkDestinationSquare(moves, isWhite, x, y);
             }
         }
 
         return moves;
+    }
+
+    private static void checkDestinationSquare(final Map<Coordinates, List<Coordinates>> moves,
+                                               final boolean isWhite, final int x, final int y) {
+
+        final Coordinates source = new Coordinates(x, y);
+        if (board.getBoard()[x][y].getColor() == Boolean.valueOf(isWhite)) {
+            for (final Coordinates destination : validPieceMoves(source)) {
+                if (revealsCheck(source, destination)) continue;
+
+                if (moves.containsKey(source)) moves.get(source).add(destination);
+                else moves.put(source, new ArrayList<>(Collections.singletonList(destination)));
+            }
+        }
+
+        if (moves.containsKey(source)) {
+            STREAM.print(notation(source) + " -> ");
+            for (final Coordinates destination : moves.get(source)) {
+                STREAM.print(notation(destination) + " ");
+            }
+
+            STREAM.println();
+        }
+    }
+
+    private static boolean revealsCheck(final Coordinates source, final Coordinates destination) {
+        final Piece piece = board.getPiece(destination);
+        Board.play(Arrays.asList(source, destination));
+        isWhite = !isWhite;
+
+        final boolean isValid = board.isInCheck(board.getColor(destination));
+        Board.undo(Arrays.asList(source, destination), piece);
+        isWhite = !isWhite;
+
+        return isValid;
     }
 
     private static List<Coordinates> validPieceMoves(final Coordinates source) {
@@ -123,16 +167,17 @@ public class Slicker {
 
     private static void initialise() {
         board = new Board();
+        inProgress = true;
         printBoard();
     }
 
     private static void printBoard() {
         for (int y = 7; y >= 0; y--) {
             for (int x = 0; x < 8; x++) {
-                System.out.print(board.getBoard()[x][y].printValue());
+                STREAM.print(board.getBoard()[x][y].printValue());
             }
 
-            System.out.println();
+            STREAM.println();
         }
     }
 }
