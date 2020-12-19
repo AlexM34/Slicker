@@ -8,6 +8,7 @@ public abstract class Piece {
                                                final Coordinates coordinates, final Color color);
 
     boolean isValidDestination(final Square square, final Color color) {
-        return square != null && square.getCoordinates().areValid() && square.getColor() != color;
+        return square.getCoordinates().areValid() && !color.equals(square.getColor());
     }
+
 }

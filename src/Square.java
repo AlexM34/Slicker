@@ -4,6 +4,12 @@ public class Square {
     private Piece piece;
     private Color color;
 
+    public Square() {
+        this.coordinates = new Coordinates(-1, -1);
+        this.piece = new None();
+        this.color = Color.EMPTY;
+    }
+
     public Square(final Coordinates coordinates, final Piece piece, final Color color) {
         this.coordinates = coordinates;
         this.piece = piece;
@@ -23,12 +29,12 @@ public class Square {
     }
 
     boolean isEmpty() {
-        return color == null;
+        return color.isEmpty();
     }
 
     void makeEmpty() {
-        piece = null;
-        color = null;
+        piece = new None();
+        color = Color.EMPTY;
     }
 
     void movePiece(final Square square) {
@@ -37,7 +43,6 @@ public class Square {
     }
 
     public char printValue() {
-        if (piece == null) return '.';
         final char letter = piece.getLetter();
         return color.isWhite() ? (char) (letter - 'a' + 'A') : letter;
     }

@@ -5,6 +5,10 @@ public enum Color {
         return this == WHITE;
     }
 
+    public boolean isEmpty() {
+        return this == EMPTY;
+    }
+
     public Color reverseColor() {
         return this == WHITE ? BLACK : WHITE;
     }
