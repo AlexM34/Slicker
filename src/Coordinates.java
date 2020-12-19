@@ -1,6 +1,7 @@
 import java.util.Objects;
 
 public class Coordinates {
+
     private final int x;
     private final int y;
 

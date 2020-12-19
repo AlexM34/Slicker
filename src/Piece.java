@@ -1,12 +1,13 @@
 import java.util.List;
 
 public abstract class Piece {
+
     abstract char getLetter();
 
     abstract List<Coordinates> getValidSquares(final Board board,
-                                               final Coordinates coordinates, final boolean isWhite);
+                                               final Coordinates coordinates, final Color color);
 
-    boolean isValidDestination(final Square square, final boolean isWhite) {
-        return square != null && square.getColor() != Boolean.valueOf(isWhite) && square.getCoordinates().areValid();
+    boolean isValidDestination(final Square square, final Color color) {
+        return square != null && square.getCoordinates().areValid() && square.getColor() != color;
     }
 }

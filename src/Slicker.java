@@ -15,9 +15,9 @@ public class Slicker {
     private static final PrintStream STREAM = new PrintStream(new FileOutputStream(FileDescriptor.out));
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    private static int USER;
+    private static int user;
     private static Board board;
-    private static boolean isWhite;
+    private static Color color;
     private static boolean inProgress;
 
     public static void main(final String[] args) {
@@ -25,27 +25,26 @@ public class Slicker {
         STREAM.println("Choose White(w) or Black(b)");
         String c = SCANNER.nextLine();
         while(!c.equals("w") && !c.equals("b")) c = SCANNER.nextLine();
-        USER = c.equals("w") ? 0 : 1;
-        STREAM.println(USER);
-        getValidMoves(true);
+        user = c.equals("w") ? 0 : 1;
+        STREAM.println(user);
+        getValidMoves(Color.WHITE);
 
-        startGame();
+        playGame();
     }
 
-    private static void startGame() {
-        isWhite = true;
+    private static void playGame() {
         while (inProgress) {
             if (isUserMove()) userMove();
-            else computerMove();
+            else randomMove();
         }
     }
 
     private static boolean isUserMove() {
-        return (USER == 0) == isWhite;
+        return (user == 0) == color.isWhite();
     }
 
     private static void userMove() {
-        final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(isWhite);
+        final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(color);
         if (validMoves.isEmpty()) {
             gameOver();
             return;
@@ -62,8 +61,8 @@ public class Slicker {
         }
     }
 
-    private static void computerMove() {
-        final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(isWhite);
+    private static void randomMove() {
+        final Map<Coordinates, List<Coordinates>> validMoves = getValidMoves(color);
         if (validMoves.isEmpty()) {
             gameOver();
             return;
@@ -80,7 +79,7 @@ public class Slicker {
     private static void gameOver() {
         inProgress = false;
 
-        if ((USER == 0 && !isWhite) || (USER == 1 && isWhite)) STREAM.println("YOU WIN!");
+        if ((user == 0 && !color.isWhite()) || (user == 1 && color.isWhite())) STREAM.println("YOU WIN!");
         else STREAM.println("YOU LOSE!");
     }
 
@@ -93,8 +92,8 @@ public class Slicker {
     }
 
     private static void play(final List<Coordinates> move) {
-        Board.play(move);
-        isWhite = !isWhite;
+        board.play(move);
+        color = color.reverseColor();
         printBoard();
     }
 
@@ -108,11 +107,11 @@ public class Slicker {
         return new Coordinates(s.charAt(0) - 'a', s.charAt(1) - '1');
     }
 
-    private static Map<Coordinates, List<Coordinates>> getValidMoves(final boolean isWhite) {
+    private static Map<Coordinates, List<Coordinates>> getValidMoves(final Color color) {
         final Map<Coordinates, List<Coordinates>> moves = new HashMap<>();
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                checkDestinationSquare(moves, isWhite, x, y);
+                checkDestinationSquare(moves, color, x, y);
             }
         }
 
@@ -120,10 +119,10 @@ public class Slicker {
     }
 
     private static void checkDestinationSquare(final Map<Coordinates, List<Coordinates>> moves,
-                                               final boolean isWhite, final int x, final int y) {
+                                               final Color color, final int x, final int y) {
 
         final Coordinates source = new Coordinates(x, y);
-        if (board.getBoard()[x][y].getColor() == Boolean.valueOf(isWhite)) {
+        if (board.getSquares()[x][y].getColor() == color) {
             for (final Coordinates destination : validPieceMoves(source)) {
                 if (revealsCheck(source, destination)) continue;
 
@@ -144,12 +143,12 @@ public class Slicker {
 
     private static boolean revealsCheck(final Coordinates source, final Coordinates destination) {
         final Piece piece = board.getPiece(destination);
-        Board.play(Arrays.asList(source, destination));
-        isWhite = !isWhite;
+        board.play(Arrays.asList(source, destination));
+        color = color.reverseColor();
 
         final boolean isValid = board.isInCheck(board.getColor(destination));
-        Board.undo(Arrays.asList(source, destination), piece);
-        isWhite = !isWhite;
+        board.undo(Arrays.asList(source, destination), piece);
+        color = color.reverseColor();
 
         return isValid;
     }
@@ -167,6 +166,7 @@ public class Slicker {
 
     private static void initialise() {
         board = new Board();
+        color = Color.WHITE;
         inProgress = true;
         printBoard();
     }
@@ -174,7 +174,7 @@ public class Slicker {
     private static void printBoard() {
         for (int y = 7; y >= 0; y--) {
             for (int x = 0; x < 8; x++) {
-                STREAM.print(board.getBoard()[x][y].printValue());
+                STREAM.print(board.getSquares()[x][y].printValue());
             }
 
             STREAM.println();

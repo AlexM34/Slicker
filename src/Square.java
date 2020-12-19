@@ -1,9 +1,10 @@
 public class Square {
+
     private final Coordinates coordinates;
     private Piece piece;
-    private Boolean color;
+    private Color color;
 
-    public Square(final Coordinates coordinates, final Piece piece, final Boolean color) {
+    public Square(final Coordinates coordinates, final Piece piece, final Color color) {
         this.coordinates = coordinates;
         this.piece = piece;
         this.color = color;
@@ -17,7 +18,7 @@ public class Square {
         return piece;
     }
 
-    Boolean getColor() {
+    Color getColor() {
         return color;
     }
 
@@ -38,6 +39,6 @@ public class Square {
     public char printValue() {
         if (piece == null) return '.';
         final char letter = piece.getLetter();
-        return color ? (char) (letter - 'a' + 'A') : letter;
+        return color.isWhite() ? (char) (letter - 'a' + 'A') : letter;
     }
 }
