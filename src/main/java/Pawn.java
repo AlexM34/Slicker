@@ -3,13 +3,17 @@ import java.util.List;
 
 public class Pawn extends Piece {
 
-    @Override
-    public char getLetter() {
-        return 'p';
+    public Pawn(final Color color) {
+        this.color = color;
     }
 
     @Override
-    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates, final Color color) {
+    public char getLetter() {
+        return color.isWhite() ? 'P' : 'p';
+    }
+
+    @Override
+    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
         final List<Coordinates> moves = new ArrayList<>();
         final int direction = color.isWhite() ? 1 : -1;
 

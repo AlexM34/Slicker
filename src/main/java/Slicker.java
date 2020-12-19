@@ -123,7 +123,7 @@ public class Slicker {
 
         final Coordinates source = new Coordinates(x, y);
         if (board.getSquares()[x][y].getColor() == color) {
-            for (final Coordinates destination : validPieceMoves(source)) {
+            for (final Coordinates destination : board.getValidPieceMoves(source)) {
                 if (revealsCheck(source, destination)) continue;
 
                 if (moves.containsKey(source)) moves.get(source).add(destination);
@@ -153,11 +153,6 @@ public class Slicker {
         return isValid;
     }
 
-    private static List<Coordinates> validPieceMoves(final Coordinates source) {
-        final Square square = board.getSquare(source);
-        return square.getPiece().getValidSquares(board, source, square.getColor());
-    }
-
     private static String notation(final Coordinates coordinates) {
         String notation = String.valueOf((char) (coordinates.getX() + 'a'));
         notation += (char) (coordinates.getY() + '1');
@@ -174,7 +169,7 @@ public class Slicker {
     private static void printBoard() {
         for (int y = 7; y >= 0; y--) {
             for (int x = 0; x < 8; x++) {
-                STREAM.print(board.getSquares()[x][y].printValue());
+                STREAM.print(board.getSquares()[x][y].getPiece().getLetter());
             }
 
             STREAM.println();

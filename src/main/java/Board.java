@@ -23,7 +23,7 @@ public class Board {
         } else {
             final Color destinationColor = squares[move.get(1).getX()][move.get(1).getY()].getColor();
             final Color color = destinationColor.reverseColor();
-            squares[move.get(1).getX()][move.get(1).getY()].movePiece(new Square(new Coordinates(0, 0), piece, color));
+            squares[move.get(1).getX()][move.get(1).getY()].movePiece(new Square(new Coordinates(0, 0), piece));
         }
     }
 
@@ -51,25 +51,25 @@ public class Board {
     private void setup() {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                final Piece piece = findPiece(x, y);
                 final Color color;
                 if (y < 2) color = Color.WHITE;
                 else if (y > 5) color = Color.BLACK;
                 else color = Color.EMPTY;
+                final Piece piece = findPiece(x, y, color);
 
-                squares[x][y] = new Square(new Coordinates(x, y), piece, color);
+                squares[x][y] = new Square(new Coordinates(x, y), piece);
             }
         }
     }
 
-    private Piece findPiece(final int x, final int y) {
-        if (1 < y && y < 6) return new None();
-        else if (y == 1 || y == 6) return new Pawn();
-        else if (x == 1 || x == 6) return new Knight();
-        else if (x == 2 || x == 5) return new Bishop();
-        else if (x == 0 || x == 7) return new Rook();
-        else if (x == 3) return new Queen();
-        else if (x == 4) return new King();
+    private Piece findPiece(final int x, final int y, final Color color) {
+        if (1 < y && y < 6) return new None(color);
+        else if (y == 1 || y == 6) return new Pawn(color);
+        else if (x == 1 || x == 6) return new Knight(color);
+        else if (x == 2 || x == 5) return new Bishop(color);
+        else if (x == 0 || x == 7) return new Rook(color);
+        else if (x == 3) return new Queen(color);
+        else if (x == 4) return new King(color);
 
         throw new IllegalArgumentException(String.format("Coordinates (%d, %d) do not exist on the board", x, y));
     }
@@ -87,7 +87,7 @@ public class Board {
     }
 
     private boolean isValid(final Coordinates source, final Coordinates destination) {
-        return getPiece(source).getValidSquares(this, source, getColor(source)).contains(destination);
+        return getPiece(source).getValidSquares(this, source).contains(destination);
     }
 
     private Coordinates findKing(final Color color) {
@@ -103,4 +103,7 @@ public class Board {
                 (color.isWhite() ? "white" : "black")));
     }
 
+    public List<Coordinates> getValidPieceMoves(final Coordinates source) {
+        return getPiece(source).getValidSquares(this, source);
+    }
 }

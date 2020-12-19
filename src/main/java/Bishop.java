@@ -3,13 +3,17 @@ import java.util.List;
 
 public class Bishop extends Piece {
 
-    @Override
-    public char getLetter() {
-        return 'b';
+    public Bishop(final Color color) {
+        this.color = color;
     }
 
     @Override
-    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates, final Color color) {
+    public char getLetter() {
+        return color.isWhite() ? 'B' : 'b';
+    }
+
+    @Override
+    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
         final List<Coordinates> moves = new ArrayList<>();
         for (int i = -1; i >= -7; i--) {
             final Square destination = board.getShiftedSquare(coordinates, i, i);

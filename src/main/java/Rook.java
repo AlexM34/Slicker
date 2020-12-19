@@ -3,13 +3,17 @@ import java.util.List;
 
 public class Rook extends Piece {
 
-    @Override
-    public char getLetter() {
-        return 'r';
+    public Rook(final Color color) {
+        this.color = color;
     }
 
     @Override
-    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates, final Color color) {
+    public char getLetter() {
+        return color.isWhite() ? 'R' : 'r';
+    }
+
+    @Override
+    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
         final List<Coordinates> moves = new ArrayList<>();
         for (int i = -1; i >= -7; i--) {
             final Square destination = board.getShiftedSquare(coordinates, i, 0);

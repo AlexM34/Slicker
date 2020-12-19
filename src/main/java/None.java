@@ -3,13 +3,17 @@ import java.util.List;
 
 public class None extends Piece {
 
+    public None(final Color color) {
+        this.color = color;
+    }
+
     @Override
     char getLetter() {
         return '.';
     }
 
     @Override
-    List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates, final Color color) {
+    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
         return new ArrayList<>();
     }
 

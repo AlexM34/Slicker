@@ -3,13 +3,17 @@ import java.util.List;
 
 public class King extends Piece {
 
-    @Override
-    public char getLetter() {
-        return 'k';
+    public King(final Color color) {
+        this.color = color;
     }
 
     @Override
-    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates, final Color color) {
+    public char getLetter() {
+        return color.isWhite() ? 'K' : 'k';
+    }
+
+    @Override
+    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
         final List<Coordinates> moves = new ArrayList<>();
         for (int x0 = -1; x0 <= 1; x0++) {
             for (int y0 = -1; y0 <= 1; y0++) {
