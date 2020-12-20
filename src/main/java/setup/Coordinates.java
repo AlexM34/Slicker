@@ -1,3 +1,5 @@
+package setup;
+
 import java.util.Objects;
 
 public class Coordinates {
@@ -5,16 +7,21 @@ public class Coordinates {
     private final int x;
     private final int y;
 
-    Coordinates(final int x, final int y) {
+    public Coordinates(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
 
-    int getX() {
+    public Coordinates(final String square) {
+        this.x = square.charAt(0) - 'a';
+        this.y = square.charAt(1) - '1';
+    }
+
+    public int getX() {
         return x;
     }
 
-    int getY() {
+    public int getY() {
         return y;
     }
 

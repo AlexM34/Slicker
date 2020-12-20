@@ -1,3 +1,5 @@
+package setup;
+
 public enum Color {
     WHITE, BLACK, EMPTY;
 

@@ -1,45 +1,46 @@
+package setup;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
 
     private final Square[][] squares;
 
-    Board() {
+    public Board() {
         squares = new Square[8][8];
         setup();
     }
 
-    void play(final List<Coordinates> move) {
-        squares[move.get(1).getX()][move.get(1).getY()].movePiece(squares[move.get(0).getX()][move.get(0).getY()]);
+    public void play(final String move) {
+        final Coordinates source = transformCoordinates(move.substring(0, 2));
+        final Coordinates destination = transformCoordinates(move.substring(2, 4));
+        play(Arrays.asList(source, destination));
+    }
+
+    private static Coordinates transformCoordinates(final String s) {
+        return new Coordinates(s.charAt(0) - 'a', s.charAt(1) - '1');
+    }
+
+    public void play(final List<Coordinates> move) {
+        squares[move.get(1).getX()][move.get(1).getY()].setPiece(squares[move.get(0).getX()][move.get(0).getY()].getPiece());
         squares[move.get(0).getX()][move.get(0).getY()].makeEmpty();
     }
 
-    void undo(final List<Coordinates> move, final Piece piece) {
-        squares[move.get(0).getX()][move.get(0).getY()].movePiece(squares[move.get(1).getX()][move.get(1).getY()]);
-
-        if (piece instanceof None) {
-            squares[move.get(1).getX()][move.get(1).getY()].makeEmpty();
-
-        } else {
-            final Color destinationColor = squares[move.get(1).getX()][move.get(1).getY()].getColor();
-            final Color color = destinationColor.reverseColor();
-            squares[move.get(1).getX()][move.get(1).getY()].movePiece(new Square(new Coordinates(0, 0), piece));
-        }
+    public void undo(final List<Coordinates> move, final Piece piece) {
+        squares[move.get(0).getX()][move.get(0).getY()].setPiece(squares[move.get(1).getX()][move.get(1).getY()].getPiece());
+        squares[move.get(1).getX()][move.get(1).getY()].setPiece(piece);
     }
 
-    Square[][] getSquares() {
-        return squares;
+    public Square getSquare(final int x, final int y) {
+        return squares[x][y];
     }
 
-    Square getSquare(final Coordinates coordinates) {
-        return squares[coordinates.getX()][coordinates.getY()];
-    }
-
-    Color getColor(final Coordinates coordinates) {
+    public Color getColor(final Coordinates coordinates) {
         return squares[coordinates.getX()][coordinates.getY()].getColor();
     }
 
-    Piece getPiece(final Coordinates coordinates) {
+    public Piece getPiece(final Coordinates coordinates) {
         return squares[coordinates.getX()][coordinates.getY()].getPiece();
     }
 
@@ -71,7 +72,7 @@ public class Board {
         else if (x == 3) return new Queen(color);
         else if (x == 4) return new King(color);
 
-        throw new IllegalArgumentException(String.format("Coordinates (%d, %d) do not exist on the board", x, y));
+        throw new IllegalArgumentException(String.format("piece.Coordinates (%d, %d) do not exist on the board", x, y));
     }
 
     public boolean isInCheck(final Color color) {
@@ -79,7 +80,7 @@ public class Board {
         final Color enemyColor = color.reverseColor();
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (squares[x][y].getColor() == enemyColor && isValid(new Coordinates(x, y), king)) return true;
+                if (squares[x][y].getColor().equals(enemyColor) && isValid(new Coordinates(x, y), king)) return true;
             }
         }
 
@@ -93,7 +94,7 @@ public class Board {
     private Coordinates findKing(final Color color) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (squares[x][y].getPiece().getLetter() == 'k' && squares[x][y].getColor() == color) {
+                if (squares[x][y].getPiece() instanceof King && squares[x][y].getColor().equals(color)) {
                     return new Coordinates(x, y);
                 }
             }
@@ -106,4 +107,5 @@ public class Board {
     public List<Coordinates> getValidPieceMoves(final Coordinates source) {
         return getPiece(source).getValidSquares(this, source);
     }
+
 }

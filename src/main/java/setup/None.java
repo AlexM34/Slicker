@@ -1,3 +1,5 @@
+package setup;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public class None extends Piece {
     }
 
     @Override
-    char getLetter() {
+    public char getLetter() {
         return '.';
     }
 

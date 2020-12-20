@@ -1,3 +1,5 @@
+package setup;
+
 public class Square {
 
     private final Coordinates coordinates;
@@ -17,11 +19,15 @@ public class Square {
         return coordinates;
     }
 
-    Piece getPiece() {
+    public Piece getPiece() {
         return piece;
     }
 
-    Color getColor() {
+    void setPiece(final Piece piece) {
+        this.piece = piece;
+    }
+
+    public Color getColor() {
         return piece.getColor();
     }
 
@@ -31,10 +37,6 @@ public class Square {
 
     void makeEmpty() {
         piece = new None(Color.EMPTY);
-    }
-
-    void movePiece(final Square square) {
-        this.piece = square.getPiece();
     }
 
 }

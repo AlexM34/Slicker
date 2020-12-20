@@ -1,3 +1,5 @@
+package setup;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,4 +40,5 @@ public class Pawn extends Piece {
     private boolean canDouble(final Coordinates coordinates, final Color color) {
         return color.isWhite() ? coordinates.getY() == 1 : coordinates.getY() == 6;
     }
+
 }

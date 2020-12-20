@@ -1,3 +1,8 @@
+import setup.Board;
+import setup.Color;
+import setup.Coordinates;
+import setup.Piece;
+
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -122,7 +127,7 @@ public class Slicker {
                                                final Color color, final int x, final int y) {
 
         final Coordinates source = new Coordinates(x, y);
-        if (board.getSquares()[x][y].getColor() == color) {
+        if (board.getSquare(x, y).getColor() == color) {
             for (final Coordinates destination : board.getValidPieceMoves(source)) {
                 if (revealsCheck(source, destination)) continue;
 
@@ -169,7 +174,7 @@ public class Slicker {
     private static void printBoard() {
         for (int y = 7; y >= 0; y--) {
             for (int x = 0; x < 8; x++) {
-                STREAM.print(board.getSquares()[x][y].getPiece().getLetter());
+                STREAM.print(board.getSquare(x, y).getPiece().getLetter());
             }
 
             STREAM.println();

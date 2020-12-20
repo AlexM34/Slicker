@@ -1,3 +1,5 @@
+package setup;
+
 import java.util.List;
 
 public abstract class Piece {
@@ -8,7 +10,7 @@ public abstract class Piece {
         return color;
     }
 
-    abstract char getLetter();
+    public abstract char getLetter();
 
     abstract List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates);
 

@@ -1,15 +1,17 @@
+package setup;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rook extends Piece {
+public class Queen extends Piece {
 
-    public Rook(final Color color) {
+    public Queen(final Color color) {
         this.color = color;
     }
 
     @Override
     public char getLetter() {
-        return color.isWhite() ? 'R' : 'r';
+        return color.isWhite() ? 'Q' : 'q';
     }
 
     @Override
@@ -41,6 +43,38 @@ public class Rook extends Piece {
 
         for (int i = 1; i <= 7; i++) {
             final Square destination = board.getShiftedSquare(coordinates, 0, i);
+            if (!isValidDestination(destination, color)) break;
+            moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, color.reverseColor())) break;
+        }
+
+        for (int i = -1; i >= -7; i--) {
+            final Square destination = board.getShiftedSquare(coordinates, i, i);
+            if (!isValidDestination(destination, color)) break;
+            moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, color.reverseColor())) break;
+        }
+
+        for (int i = -1; i >= -7; i--) {
+            final Square destination = board.getShiftedSquare(coordinates, i, -i);
+            if (!isValidDestination(destination, color)) break;
+            moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, color.reverseColor())) break;
+        }
+
+        for (int i = 1; i <= 7; i++) {
+            final Square destination = board.getShiftedSquare(coordinates, i, i);
+            if (!isValidDestination(destination, color)) break;
+            moves.add(destination.getCoordinates());
+
+            if (!isValidDestination(destination, color.reverseColor())) break;
+        }
+
+        for (int i = 1; i <= 7; i++) {
+            final Square destination = board.getShiftedSquare(coordinates, i, -i);
             if (!isValidDestination(destination, color)) break;
             moves.add(destination.getCoordinates());
 
