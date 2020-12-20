@@ -16,7 +16,7 @@ class NoneTest {
 
     @Test
     void getValidSquares() {
-        assertEquals(new ArrayList<>(), new None(EMPTY).getValidSquares(new Board(), new Coordinates(4, 3)));
+        assertEquals(new ArrayList<>(), new None(EMPTY).getValidSquares(new Board(), new Coordinates("e4")));
     }
 
 }

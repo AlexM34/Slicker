@@ -103,13 +103,9 @@ public class Slicker {
     }
 
     private static List<Coordinates> parseMove(final String move) {
-        final Coordinates source = transformCoordinates(move.substring(0, 2));
-        final Coordinates destination = transformCoordinates(move.substring(2, 4));
+        final Coordinates source = new Coordinates(move.substring(0, 2));
+        final Coordinates destination = new Coordinates(move.substring(2, 4));
         return Arrays.asList(source, destination);
-    }
-
-    private static Coordinates transformCoordinates(final String s) {
-        return new Coordinates(s.charAt(0) - 'a', s.charAt(1) - '1');
     }
 
     private static Map<Coordinates, List<Coordinates>> getValidMoves(final Color color) {

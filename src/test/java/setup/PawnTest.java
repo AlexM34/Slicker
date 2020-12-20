@@ -110,8 +110,7 @@ class PawnTest {
     }
 
     private List<Coordinates> transform(final String... squares) {
-        return Arrays.stream(squares).map(s ->
-                new Coordinates(s.charAt(0) - 'a', s.charAt(1) - '1')).collect(Collectors.toList());
+        return Arrays.stream(squares).map(Coordinates::new).collect(Collectors.toList());
     }
 
 }

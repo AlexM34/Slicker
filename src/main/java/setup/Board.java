@@ -13,13 +13,9 @@ public class Board {
     }
 
     public void play(final String move) {
-        final Coordinates source = transformCoordinates(move.substring(0, 2));
-        final Coordinates destination = transformCoordinates(move.substring(2, 4));
+        final Coordinates source = new Coordinates(move.substring(0, 2));
+        final Coordinates destination = new Coordinates(move.substring(2, 4));
         play(Arrays.asList(source, destination));
-    }
-
-    private static Coordinates transformCoordinates(final String s) {
-        return new Coordinates(s.charAt(0) - 'a', s.charAt(1) - '1');
     }
 
     public void play(final List<Coordinates> move) {
