@@ -36,10 +36,6 @@ public class Coordinates {
         return 0 <= x0 && x0 < 8 && 0 <= y0 && y0 < 8;
     }
 
-    public String print() {
-        return String.format("(%d, %d)", x, y);
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -52,5 +48,10 @@ public class Coordinates {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return ((char) (x + 'a')) + "" + ((char) (y + '1'));
     }
 }
