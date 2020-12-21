@@ -6,9 +6,9 @@ import static setup.Color.WHITE;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class KnightTest {
@@ -29,8 +29,8 @@ class KnightTest {
 
     @Test
     void canMoveStartingPosition() {
-        final List<Coordinates> validSquares = whiteKnight.getValidSquares(board, new Coordinates("b1"));
-        final List<Coordinates> expectedSquares = transform("a3", "c3");
+        final Set<Coordinates> validSquares = whiteKnight.getValidSquares(board, new Coordinates("b1"));
+        final Set<Coordinates> expectedSquares = transform("a3", "c3");
         assertEquals(expectedSquares, validSquares);
     }
 
@@ -38,8 +38,8 @@ class KnightTest {
     void canMoveCenter() {
         board.play("g8e4");
 
-        final List<Coordinates> validSquares = blackKnight.getValidSquares(board, new Coordinates("e4"));
-        final List<Coordinates> expectedSquares = transform("c5", "c3", "d6", "d2", "f6", "f2", "g5", "g3");
+        final Set<Coordinates> validSquares = blackKnight.getValidSquares(board, new Coordinates("e4"));
+        final Set<Coordinates> expectedSquares = transform("c5", "c3", "d6", "d2", "f6", "f2", "g5", "g3");
         assertEquals(expectedSquares, validSquares);
     }
 
@@ -48,12 +48,12 @@ class KnightTest {
         board.play("a1b3");
         board.play("b1a1");
 
-        final List<Coordinates> validSquares = whiteKnight.getValidSquares(board, new Coordinates("a1"));
-        assertEquals(new ArrayList<>(), validSquares);
+        final Set<Coordinates> validSquares = whiteKnight.getValidSquares(board, new Coordinates("a1"));
+        assertEquals(new HashSet<>(), validSquares);
     }
 
-    private List<Coordinates> transform(final String... squares) {
-        return Arrays.stream(squares).map(Coordinates::new).collect(Collectors.toList());
+    private Set<Coordinates> transform(final String... squares) {
+        return Arrays.stream(squares).map(Coordinates::new).collect(Collectors.toSet());
     }
 
 }

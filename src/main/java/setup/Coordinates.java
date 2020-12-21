@@ -54,4 +54,5 @@ public class Coordinates {
     public String toString() {
         return ((char) (x + 'a')) + "" + ((char) (y + '1'));
     }
+
 }

@@ -1,6 +1,7 @@
 package setup;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Piece {
 
@@ -12,9 +13,27 @@ public abstract class Piece {
 
     public abstract char getLetter();
 
-    abstract List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates);
+    abstract Set<Coordinates> getValidSquares(final Board board, final Coordinates coordinates);
 
-    boolean isValidDestination(final Square square, final Color color) {
+    Set<Coordinates> getSquares(final Board board, final Coordinates coordinates,
+                                final int x, final int y) {
+        final Set<Coordinates> squares = new HashSet<>();
+        for (int x1 = x, y1 = y; x1 != 8 * x || y1 != 8 * y; x1 += x, y1 += y) {
+            final Square destination = board.getShiftedSquare(coordinates, x1, y1);
+            if (isValidDestination(destination)) squares.add(destination.getCoordinates());
+
+            if (isUnoccupied(destination)) break;
+        }
+
+        return squares;
+    }
+
+    boolean isValidDestination(final Square square) {
         return square.getCoordinates().areValid() && !color.equals(square.getColor());
     }
+
+    private boolean isUnoccupied(final Square destination) {
+        return !destination.getCoordinates().areValid() || !destination.getColor().isEmpty();
+    }
+
 }

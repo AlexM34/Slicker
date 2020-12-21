@@ -5,7 +5,7 @@ import static setup.Color.EMPTY;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 class NoneTest {
 
@@ -16,7 +16,7 @@ class NoneTest {
 
     @Test
     void getValidSquares() {
-        assertEquals(new ArrayList<>(), new None(EMPTY).getValidSquares(new Board(), new Coordinates("e4")));
+        assertEquals(new HashSet<>(), new None(EMPTY).getValidSquares(new Board(), new Coordinates("e4")));
     }
 
 }

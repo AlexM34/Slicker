@@ -1,7 +1,7 @@
 package setup;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class None extends Piece {
 
@@ -15,8 +15,8 @@ public class None extends Piece {
     }
 
     @Override
-    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
-        return new ArrayList<>();
+    public Set<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
+        return new HashSet<>();
     }
 
 }

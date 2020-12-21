@@ -6,9 +6,9 @@ import static setup.Color.WHITE;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class KingTest {
@@ -32,19 +32,19 @@ class KingTest {
         board.play("e1d3");
         board.play("b8d4");
 
-        final List<Coordinates> validSquares = whiteKing.getValidSquares(board, new Coordinates("d3"));
-        final List<Coordinates> expectedSquares = transform("c3", "c4", "d4", "e3", "e4");
+        final Set<Coordinates> validSquares = whiteKing.getValidSquares(board, new Coordinates("d3"));
+        final Set<Coordinates> expectedSquares = transform("c3", "c4", "d4", "e3", "e4");
         assertEquals(expectedSquares, validSquares);
     }
 
     @Test
     void cannotMove() {
-        final List<Coordinates> validSquares = blackKing.getValidSquares(board, new Coordinates("d8"));
-        assertEquals(new ArrayList<>(), validSquares);
+        final Set<Coordinates> validSquares = blackKing.getValidSquares(board, new Coordinates("d8"));
+        assertEquals(new HashSet<>(), validSquares);
     }
 
-    private List<Coordinates> transform(final String... squares) {
-        return Arrays.stream(squares).map(Coordinates::new).collect(Collectors.toList());
+    private Set<Coordinates> transform(final String... squares) {
+        return Arrays.stream(squares).map(Coordinates::new).collect(Collectors.toSet());
     }
 
 }

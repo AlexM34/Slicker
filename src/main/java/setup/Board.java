@@ -2,6 +2,7 @@ package setup;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class Board {
 
@@ -100,7 +101,7 @@ public class Board {
                 (color.isWhite() ? "white" : "black")));
     }
 
-    public List<Coordinates> getValidPieceMoves(final Coordinates source) {
+    public Set<Coordinates> getValidPieceMoves(final Coordinates source) {
         return getPiece(source).getValidSquares(this, source);
     }
 

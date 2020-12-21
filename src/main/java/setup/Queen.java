@@ -1,7 +1,7 @@
 package setup;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Queen extends Piece {
 
@@ -15,72 +15,15 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
-        final List<Coordinates> moves = new ArrayList<>();
-        for (int i = -1; i >= -7; i--) {
-            final Square destination = board.getShiftedSquare(coordinates, i, 0);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
-        }
-
-        for (int i = -1; i >= -7; i--) {
-            final Square destination = board.getShiftedSquare(coordinates, 0, i);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
-        }
-
-        for (int i = 1; i <= 7; i++) {
-            final Square destination = board.getShiftedSquare(coordinates, i, 0);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
-        }
-
-        for (int i = 1; i <= 7; i++) {
-            final Square destination = board.getShiftedSquare(coordinates, 0, i);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
-        }
-
-        for (int i = -1; i >= -7; i--) {
-            final Square destination = board.getShiftedSquare(coordinates, i, i);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
-        }
-
-        for (int i = -1; i >= -7; i--) {
-            final Square destination = board.getShiftedSquare(coordinates, i, -i);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
-        }
-
-        for (int i = 1; i <= 7; i++) {
-            final Square destination = board.getShiftedSquare(coordinates, i, i);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
-        }
-
-        for (int i = 1; i <= 7; i++) {
-            final Square destination = board.getShiftedSquare(coordinates, i, -i);
-            if (!isValidDestination(destination, color)) break;
-            moves.add(destination.getCoordinates());
-
-            if (!isValidDestination(destination, color.reverseColor())) break;
+    public Set<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
+        final Set<Coordinates> moves = new HashSet<>();
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                if (x != 0 || y != 0) moves.addAll(getSquares(board, coordinates, x, y));
+            }
         }
 
         return moves;
     }
+
 }

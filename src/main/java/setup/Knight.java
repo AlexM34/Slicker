@@ -1,7 +1,7 @@
 package setup;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Knight extends Piece {
 
@@ -15,18 +15,18 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
-        final List<Coordinates> moves = new ArrayList<>();
-        for (int x0 = -2; x0 <= 2; x0++) {
-            if (x0 == 0) continue;
+    public Set<Coordinates> getValidSquares(final Board board, final Coordinates coordinates) {
+        final Set<Coordinates> moves = new HashSet<>();
+        for (int x = -2; x <= 2; x++) {
+            if (x == 0) continue;
 
-            final Square goUp = board.getShiftedSquare(coordinates, x0, 3 - Math.abs(x0));
-            if (isValidDestination(goUp, color)) moves.add(goUp.getCoordinates());
-
-            final Square goDown = board.getShiftedSquare(coordinates, x0, Math.abs(x0) - 3);
-            if (isValidDestination(goDown, color)) moves.add(goDown.getCoordinates());
+            for (int y = -1; y <= 1; y += 2) {
+                final Square square = board.getShiftedSquare(coordinates, x, y * (3 - Math.abs(x)));
+                if (isValidDestination(square)) moves.add(square.getCoordinates());
+            }
         }
 
         return moves;
     }
+
 }

@@ -6,9 +6,9 @@ import static setup.Color.WHITE;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class BishopTest {
@@ -31,19 +31,19 @@ class BishopTest {
     void canMove() {
         board.play("c8e4");
 
-        final List<Coordinates> validSquares = blackBishop.getValidSquares(board, new Coordinates("e4"));
-        final List<Coordinates> expectedSquares = transform("d3", "c2", "d5", "c6", "f5", "g6", "f3", "g2");
+        final Set<Coordinates> validSquares = blackBishop.getValidSquares(board, new Coordinates("e4"));
+        final Set<Coordinates> expectedSquares = transform("d3", "c2", "d5", "c6", "f5", "g6", "f3", "g2");
         assertEquals(expectedSquares, validSquares);
     }
 
     @Test
     void cannotMove() {
-        final List<Coordinates> validSquares = whiteBishop.getValidSquares(board, new Coordinates("b1"));
-        assertEquals(new ArrayList<>(), validSquares);
+        final Set<Coordinates> validSquares = whiteBishop.getValidSquares(board, new Coordinates("b1"));
+        assertEquals(new HashSet<>(), validSquares);
     }
 
-    private List<Coordinates> transform(final String... squares) {
-        return Arrays.stream(squares).map(Coordinates::new).collect(Collectors.toList());
+    private Set<Coordinates> transform(final String... squares) {
+        return Arrays.stream(squares).map(Coordinates::new).collect(Collectors.toSet());
     }
 
 }
