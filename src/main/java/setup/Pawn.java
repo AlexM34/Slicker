@@ -30,7 +30,8 @@ public class Pawn extends Piece {
 
         for (int x = -1; x <= 1; x += 2) {
             final Square captureMove = board.getShiftedSquare(coordinates, x, direction);
-            if (isValidDestination(captureMove) && !captureMove.isEmpty()) moves.add(captureMove.getCoordinates());
+            if (isValidDestination(captureMove) &&
+                    (!captureMove.isEmpty() || board.isEnPassant(captureMove))) moves.add(captureMove.getCoordinates());
         }
 
         return moves;

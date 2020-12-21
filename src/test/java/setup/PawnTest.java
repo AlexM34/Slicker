@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static setup.Color.BLACK;
 import static setup.Color.WHITE;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -88,7 +87,6 @@ class PawnTest {
         assertEquals(expectedSquares, validSquares);
     }
 
-    @Disabled
     @Test
     void canEnPassant() {
         board.play("e2e5");

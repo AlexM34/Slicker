@@ -1,15 +1,21 @@
 package setup;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Board {
 
     private final Square[][] squares;
+    private final Map<Integer, Coordinates> enPassant;
+    private int moveCount;
 
     public Board() {
         squares = new Square[8][8];
+        enPassant = new HashMap<>();
+        moveCount = 0;
         setup();
     }
 
@@ -22,11 +28,31 @@ public class Board {
     public void play(final List<Coordinates> move) {
         squares[move.get(1).getX()][move.get(1).getY()].setPiece(squares[move.get(0).getX()][move.get(0).getY()].getPiece());
         squares[move.get(0).getX()][move.get(0).getY()].makeEmpty();
+        moveCount++;
+
+        checkForEnPassant(move);
+    }
+
+    private void checkForEnPassant(final List<Coordinates> move) {
+        final Piece piece = squares[move.get(1).getX()][move.get(1).getY()].getPiece();
+        final int sourceY = piece.getColor().isWhite() ? 1 : 6;
+        final int destinationY = piece.getColor().isWhite() ? 3 : 4;
+
+        if (piece instanceof Pawn && move.get(0).getY() == sourceY && move.get(1).getY() == destinationY) {
+            final Coordinates enPassantSquare = new Coordinates(move.get(0).getX(), (sourceY + destinationY) / 2);
+            enPassant.put(moveCount, enPassantSquare);
+        }
     }
 
     public void undo(final List<Coordinates> move, final Piece piece) {
         squares[move.get(0).getX()][move.get(0).getY()].setPiece(squares[move.get(1).getX()][move.get(1).getY()].getPiece());
         squares[move.get(1).getX()][move.get(1).getY()].setPiece(piece);
+
+        enPassant.remove(moveCount--);
+    }
+
+    boolean isEnPassant(final Square square) {
+        return square.getCoordinates().equals(enPassant.get(moveCount));
     }
 
     public Square getSquare(final int x, final int y) {
