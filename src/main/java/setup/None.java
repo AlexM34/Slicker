@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class None extends Piece {
 
-    public None(final Color color) {
-        this.color = color;
+    public None() {
+        this.color = Color.EMPTY;
     }
 
     @Override

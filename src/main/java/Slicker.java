@@ -86,6 +86,8 @@ public class Slicker {
 
         if (!user.equals(toMove)) STREAM.println("YOU WIN!");
         else STREAM.println("YOU LOSE!");
+
+        board.printMoves(STREAM);
     }
 
     private static boolean isAllowed(final List<Coordinates> move,
@@ -116,6 +118,8 @@ public class Slicker {
             }
         }
 
+        STREAM.println(board.castling.getWhiteShortCastle());
+        STREAM.println(board.isShortCastleAllowed(Color.WHITE));
         return moves;
     }
 

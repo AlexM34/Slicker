@@ -7,7 +7,7 @@ public class Square {
 
     public Square() {
         this.coordinates = new Coordinates(-1, -1);
-        this.piece = new None(Color.EMPTY);
+        this.piece = new None();
     }
 
     public Square(final Coordinates coordinates, final Piece piece) {
@@ -36,7 +36,7 @@ public class Square {
     }
 
     void makeEmpty() {
-        piece = new None(Color.EMPTY);
+        piece = new None();
     }
 
 }
