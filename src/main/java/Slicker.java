@@ -118,8 +118,6 @@ public class Slicker {
             }
         }
 
-        STREAM.println(board.castling.getWhiteShortCastle());
-        STREAM.println(board.isShortCastleAllowed(Color.WHITE));
         return moves;
     }
 

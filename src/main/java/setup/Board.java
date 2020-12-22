@@ -62,8 +62,6 @@ public class Board {
             final int oldRookX = move.get(0).getX() > move.get(1).getX() ? 0 : 7;
             final int newRookX = (move.get(0).getX() + move.get(1).getX()) / 2;
 
-            System.out.println(oldRookX);
-            System.out.println(newRookX);
             squares[newRookX][move.get(1).getY()].setPiece(squares[oldRookX][move.get(0).getY()].getPiece());
             squares[oldRookX][move.get(0).getY()].makeEmpty();
         }
@@ -78,6 +76,12 @@ public class Board {
             final Coordinates enPassantSquare = new Coordinates(move.get(0).getX(), (sourceY + destinationY) / 2);
             enPassant.put(moves.size(), enPassantSquare);
         }
+    }
+
+    public void undo(final String move) {
+        final Coordinates source = new Coordinates(move.substring(0, 2));
+        final Coordinates destination = new Coordinates(move.substring(2, 4));
+        undo(Arrays.asList(source, destination), new None());
     }
 
     public void undo(final List<Coordinates> move, final Piece piece) {
@@ -120,6 +124,10 @@ public class Board {
 
     boolean isEnPassantAllowed(final Square square) {
         return square.getCoordinates().equals(enPassant.get(moves.size()));
+    }
+
+    public Square getSquare(final String square) {
+        return getSquare(square.charAt(0) - 'a', square.charAt(1) - '1');
     }
 
     public Square getSquare(final int x, final int y) {

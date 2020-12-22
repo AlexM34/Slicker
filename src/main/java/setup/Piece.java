@@ -1,6 +1,7 @@
 package setup;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class Piece {
@@ -34,6 +35,19 @@ public abstract class Piece {
 
     private boolean isUnoccupied(final Square destination) {
         return !destination.getCoordinates().areValid() || !destination.getColor().isEmpty();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Piece piece = (Piece) o;
+        return color == piece.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color);
     }
 
 }
