@@ -25,28 +25,32 @@ public class Coordinates {
         return y;
     }
 
-    boolean areValid() {
-        return 0 <= x && x < 8 && 0 <= y && y < 8;
+    boolean isValid() {
+        return isValid(x, y);
     }
 
     boolean canShift(final int xShift, final int yShift) {
         final int x0 = x + xShift;
         final int y0 = y + yShift;
 
-        return 0 <= x0 && x0 < 8 && 0 <= y0 && y0 < 8;
+        return isValid(x0, y0);
+    }
+
+    private boolean isValid(final int x, final int y) {
+        return 0 <= x && x < 8 && 0 <= y && y < 8;
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public final boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Coordinates)) return false;
         final Coordinates that = (Coordinates) o;
         return x == that.x &&
                 y == that.y;
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hash(x, y);
     }
 

@@ -30,11 +30,11 @@ public abstract class Piece {
     }
 
     boolean isValidDestination(final Square square) {
-        return square.getCoordinates().areValid() && !color.equals(square.getColor());
+        return square.getCoordinates().isValid() && !color.equals(square.getColor());
     }
 
     private boolean isUnoccupied(final Square destination) {
-        return !destination.getCoordinates().areValid() || !destination.getColor().isEmpty();
+        return !destination.getCoordinates().isValid() || !destination.getColor().isEmpty();
     }
 
     @Override
